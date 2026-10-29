@@ -4,12 +4,14 @@ from kivy.graphics import Color, Ellipse, Line, Rectangle, RoundedRectangle, Pus
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.uix.spinner import Spinner
 from kivy.uix.widget import Widget
 
 
 class RaspberryBoard(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.model_code = "pi5"
         self.angle = -8
         self.touch_down = None
         self.powered = True
@@ -17,6 +19,11 @@ class RaspberryBoard(Widget):
         self.blink_phase = False
         self.bind(pos=self.update_canvas, size=self.update_canvas)
         Clock.schedule_interval(self.update_led, .65)
+
+    def set_model(self, model_code):
+        self.model_code = model_code
+        self.angle = -8
+        self.update_canvas()
 
     def update_led(self, _dt):
         if self.blinking and self.powered:
@@ -71,7 +78,14 @@ class RaspberryBoard(Widget):
 
             w, h = self.width, self.height
             scale = min(w / 520, h / 350)
-            bw, bh = 520 * scale, 350 * scale
+            models = {
+                "pi5": ("Raspberry Pi 5", "BCM2712", "LPDDR4X", 520, 350),
+                "pi4": ("Raspberry Pi 4 Model B", "BCM2711", "LPDDR4", 520, 350),
+                "pi3": ("Raspberry Pi 3 Model B+", "BCM2837B0", "LPDDR2", 520, 350),
+                "pizero": ("Raspberry Pi Zero 2 W", "RP3A0-AU", "LPDDR2", 340, 310),
+            }
+            _name, soc, ram, bw_units, bh_units = models[self.model_code]
+            bw, bh = bw_units * scale, bh_units * scale
             bx, by = self.center_x - bw / 2, self.center_y - bh / 2
 
             # Sombra e PCB
@@ -87,8 +101,13 @@ class RaspberryBoard(Widget):
                              bx + i * 42 * scale, by + bh - 5 * scale], width=.4)
 
             # SoC, memoria, portas e GPIO
-            self.chip(bx + 188 * scale, by + 105 * scale, 118 * scale, 118 * scale, "BCM2712")
-            self.chip(bx + 202 * scale, by + 47 * scale, 82 * scale, 48 * scale, "LPDDR4X")
+            soc_x = bx + (112 if self.model_code == "pizero" else 188) * scale
+            soc_y = by + (112 if self.model_code == "pizero" else 105) * scale
+            soc_size = 104 * scale if self.model_code == "pizero" else 118 * scale
+            self.chip(soc_x, soc_y, soc_size, soc_size, soc)
+            ram_x = bx + (126 if self.model_code == "pizero" else 202) * scale
+            ram_y = by + (64 if self.model_code == "pizero" else 47) * scale
+            self.chip(ram_x, ram_y, 82 * scale, 48 * scale, ram)
             self.chip(bx + 55 * scale, by + 58 * scale, 48 * scale, 38 * scale, "PMIC")
             self.chip(bx + 410 * scale, by + 72 * scale, 54 * scale, 54 * scale, "Wi-Fi", radius=27)
             self.chip(bx + 362 * scale, by + 205 * scale, 116 * scale, 48 * scale)
@@ -138,8 +157,29 @@ class RaspberryApp(App):
         title = Label(text="[b]Raspberry Pi 5[/b]", markup=True, size_hint=(1, .08), font_size="22sp")
         root.add_widget(title)
 
-        board = RaspberryBoard(size_hint=(1, .72))
+        model_bar = Spinner(
+            text="Raspberry Pi 5",
+            values=("Raspberry Pi 5", "Raspberry Pi 4 Model B",
+                    "Raspberry Pi 3 Model B+", "Raspberry Pi Zero 2 W"),
+            size_hint=(1, .08),
+        )
+        root.add_widget(model_bar)
+
+        board = RaspberryBoard(size_hint=(1, .64))
         root.add_widget(board)
+
+        model_codes = {
+            "Raspberry Pi 5": "pi5",
+            "Raspberry Pi 4 Model B": "pi4",
+            "Raspberry Pi 3 Model B+": "pi3",
+            "Raspberry Pi Zero 2 W": "pizero",
+        }
+
+        def on_model(_spinner, text):
+            board.set_model(model_codes[text])
+            title.text = f"[b]{text}[/b]"
+
+        model_bar.bind(text=on_model)
 
         buttons = BoxLayout(size_hint=(1, .18), spacing=8)
         power = Button(text="DESLIGAR", background_color=(.68, .82, .24, 1))

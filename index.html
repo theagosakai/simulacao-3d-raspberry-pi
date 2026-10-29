@@ -12,9 +12,17 @@
     <header class="topbar">
       <div>
         <p class="eyebrow">LABORATORIO DIGITAL</p>
-        <h1>Raspberry Pi 5</h1>
+        <h1 id="modelTitle">Raspberry Pi 5</h1>
       </div>
-      <div class="status"><span class="status-dot"></span> ONLINE</div>
+      <div class="model-picker">
+        <label for="modelSelect">MODELO</label>
+        <select id="modelSelect">
+          <option value="pi5">Raspberry Pi 5</option>
+          <option value="pi4">Raspberry Pi 4</option>
+          <option value="pi3">Raspberry Pi 3 Model B+</option>
+          <option value="pizero">Raspberry Pi Zero 2 W</option>
+        </select>
+      </div>
     </header>
 
     <section class="stage" id="stage" aria-label="Visualizacao 3D do Raspberry Pi">

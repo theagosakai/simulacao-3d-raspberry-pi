@@ -14,6 +14,9 @@ Depois acesse `http://localhost:8080`.
 
 Arraste sobre a placa para girar a visualizacao. Os botoes controlam energia, LEDs e reset da camera.
 
+O seletor permite alternar entre Raspberry Pi 5, Raspberry Pi 4 Model B,
+Raspberry Pi 3 Model B+ e Raspberry Pi Zero 2 W.
+
 ## Versao Android com Kivy
 
 Instale as dependencias em um ambiente Python:
