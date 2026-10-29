@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08111f">
+  <title>Simulacao Raspberry Pi 5</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">LABORATORIO DIGITAL</p>
+        <h1>Raspberry Pi 5</h1>
+      </div>
+      <div class="status"><span class="status-dot"></span> ONLINE</div>
+    </header>
+
+    <section class="stage" id="stage" aria-label="Visualizacao 3D do Raspberry Pi">
+      <div class="scene">
+        <div class="board" id="board">
+          <div class="board-grid"></div>
+          <div class="board-face board-top"></div>
+          <div class="board-face board-bottom"></div>
+          <div class="board-label label-top">Raspberry Pi 5</div>
+
+          <div class="chip soc">
+            <span>BCM2712</span>
+            <small>16 nm</small>
+          </div>
+          <div class="chip ram">LPDDR4X</div>
+          <div class="chip wifi">Wi-Fi</div>
+          <div class="chip power">PMIC</div>
+          <div class="chip usb-controller">USB 3</div>
+
+          <div class="gpio" aria-label="40 pinos GPIO">
+            <div class="gpio-pinheads" id="gpio"></div>
+          </div>
+
+          <div class="port ethernet"><span></span></div>
+          <div class="port usb usb-a"><span></span></div>
+          <div class="port usb usb-b"><span></span></div>
+          <div class="port usb-c"><span></span></div>
+          <div class="port hdmi hdmi-a"></div>
+          <div class="port hdmi hdmi-b"></div>
+          <div class="port audio"></div>
+          <div class="slot pc-slot"><span></span></div>
+
+          <div class="led led-green" data-led="green"></div>
+          <div class="led led-red" data-led="red"></div>
+          <div class="mount-hole h1"></div><div class="mount-hole h2"></div>
+          <div class="mount-hole h3"></div><div class="mount-hole h4"></div>
+        </div>
+      </div>
+      <p class="drag-hint">ARRASTE PARA ROTACIONAR</p>
+    </section>
+
+    <section class="controls" aria-label="Controles da simulacao">
+      <button class="control-button primary" id="powerButton" type="button" aria-pressed="true">
+        <span class="button-icon">◉</span>
+        <span><small>Energia</small><strong>LIGADO</strong></span>
+      </button>
+      <button class="control-button" id="resetButton" type="button">
+        <span class="button-icon">↻</span>
+        <span><small>Visualizacao</small><strong>RESETAR</strong></span>
+      </button>
+      <button class="control-button" id="ledButton" type="button" aria-pressed="true">
+        <span class="button-icon">◫</span>
+        <span><small>Sistema</small><strong>PISCAR LED</strong></span>
+      </button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

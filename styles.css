@@ -1,0 +1,125 @@
+:root {
+  color-scheme: dark;
+  --bg: #070d18;
+  --panel: #101827;
+  --board: #1b9a5a;
+  --board-dark: #087542;
+  --ink: #edf6f0;
+  --muted: #8d9caf;
+  --accent: #c6f13a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 50% 35%, rgba(34, 91, 91, .25), transparent 32rem),
+    linear-gradient(145deg, #09101d, #050912 70%);
+}
+
+.app-shell { min-height: 100vh; display: grid; grid-template-rows: auto minmax(420px, 1fr) auto; }
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px clamp(20px, 5vw, 68px) 12px;
+}
+
+.eyebrow { margin: 0 0 4px; color: var(--accent); font-size: .68rem; letter-spacing: .24em; font-weight: 800; }
+h1 { margin: 0; font-size: clamp(1.25rem, 3vw, 2rem); }
+.status { color: #b6c5d5; font-size: .72rem; letter-spacing: .16em; }
+.status-dot { display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+
+.stage { position: relative; display: grid; place-items: center; min-height: 420px; touch-action: none; user-select: none; }
+.scene { width: 620px; height: 420px; perspective: 1100px; display: grid; place-items: center; }
+
+.board {
+  position: relative;
+  width: 520px;
+  height: 350px;
+  transform-style: preserve-3d;
+  transform: rotateX(58deg) rotateZ(-28deg);
+  border-radius: 8px;
+  border: 2px solid rgba(180, 255, 210, .22);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 38px, rgba(255,255,255,.018) 39px 40px),
+    repeating-linear-gradient(0deg, transparent 0 38px, rgba(255,255,255,.018) 39px 40px),
+    linear-gradient(135deg, var(--board), var(--board-dark));
+  box-shadow: -8px 10px 0 #064d31, -16px 22px 38px rgba(0,0,0,.7);
+  transition: transform .12s ease-out;
+}
+
+.board-grid { position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.08), transparent 35%); }
+.board-face { position: absolute; left: 0; width: 100%; height: 18px; background: #063a2a; transform-origin: bottom; }
+.board-bottom { bottom: -18px; transform: rotateX(-90deg); }
+.board-top { top: 0; transform: translateZ(-18px); display: none; }
+.board-label { position: absolute; right: 22px; bottom: 18px; color: rgba(220,255,236,.45); font-size: 10px; letter-spacing: .12em; }
+
+.chip {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  color: #c6d0d0;
+  background: linear-gradient(145deg, #343b40, #15191c);
+  border: 1px solid #5a6265;
+  box-shadow: 6px 7px 9px rgba(0,0,0,.38), inset 0 0 0 2px #202428;
+  transform: translateZ(5px);
+  text-align: center;
+}
+.soc { width: 118px; height: 118px; left: 188px; top: 105px; border-radius: 5px; font-size: 12px; font-weight: 800; }
+.soc small { display: block; color: #777; font-size: 8px; }
+.ram { width: 82px; height: 48px; left: 202px; top: 47px; font-size: 7px; }
+.wifi { width: 54px; height: 54px; right: 48px; top: 72px; border-radius: 50%; font-size: 8px; }
+.power { width: 48px; height: 38px; left: 55px; top: 58px; font-size: 7px; }
+.usb-controller { width: 46px; height: 32px; right: 76px; bottom: 58px; font-size: 7px; }
+
+.gpio { position: absolute; left: 362px; top: 205px; width: 116px; height: 48px; transform: translateZ(8px); border: 2px solid rgba(0,0,0,.25); }
+.gpio-pinheads { height: 100%; display: grid; grid-template-columns: repeat(20, 1fr); grid-template-rows: repeat(2, 1fr); }
+.gpio-pinheads span { width: 4px; height: 4px; margin: 4px; border-radius: 50%; background: linear-gradient(135deg, gold, #7d6500); box-shadow: 0 1px 2px #000; }
+
+.port { position: absolute; transform: translateZ(10px); box-shadow: 7px 6px 7px rgba(0,0,0,.5); border: 3px solid #263138; }
+.ethernet { right: -16px; top: 35px; width: 66px; height: 86px; background: #15191a; border-radius: 5px; }
+.ethernet span { position: absolute; inset: 12px 9px 24px; background: repeating-linear-gradient(90deg, #c9d1cf 0 4px, #1b2021 4px 7px); }
+.usb { right: -12px; height: 62px; width: 62px; background: #a7adae; }
+.usb-a { top: 145px; }.usb-b { top: 218px; }
+.usb span { position: absolute; inset: 11px; border: 2px solid #42494a; background: #252a2b; }
+.usb-c { right: 75px; bottom: -12px; width: 54px; height: 34px; border-radius: 9px 9px 0 0; background: #aeb3b2; }
+.hdmi { right: 151px; bottom: -9px; width: 54px; height: 38px; border-radius: 3px; background: #b4b7b4; }
+.hdmi-b { right: 211px; }.audio { position: absolute; right: 300px; bottom: -8px; width: 38px; height: 38px; border-radius: 50%; background: #171a1a; border: 9px solid #8f9693; transform: translateZ(8px); }
+
+.pc-slot { position: absolute; left: 72px; top: 128px; width: 68px; height: 116px; background: #272d2b; border: 3px solid #111; border-radius: 3px; transform: translateZ(8px); }
+.pc-slot span { position: absolute; width: 54px; height: 88px; left: 4px; top: 12px; border-radius: 4px; background: linear-gradient(135deg, #111 45%, #303b37); border: 2px solid #66736e; }
+
+.led { position: absolute; width: 7px; height: 7px; border-radius: 50%; transform: translateZ(9px); }
+.led-green { left: 18px; top: 302px; background: #6cff75; box-shadow: 0 0 8px #55ff66; }
+.led-red { left: 32px; top: 302px; background: #ff5c5c; box-shadow: 0 0 8px #ff3535; }
+.led.off { opacity: .15; box-shadow: none; }
+.led.blink { animation: blink .65s steps(1) infinite; }
+@keyframes blink { 50% { filter: brightness(2.4); box-shadow: 0 0 16px currentColor; } }
+
+.mount-hole { position: absolute; width: 22px; height: 22px; border-radius: 50%; transform: translateZ(8px); border: 5px solid rgba(215,230,220,.4); background: rgba(0,0,0,.5); box-shadow: inset 0 0 0 3px rgba(0,0,0,.55); }
+.h1 { left: 18px; top: 18px; }.h2 { right: 18px; top: 18px; }.h3 { left: 18px; bottom: 18px; }.h4 { right: 18px; bottom: 18px; }
+.drag-hint { position: absolute; bottom: 18px; margin: 0; color: var(--muted); font-size: .66rem; letter-spacing: .18em; }
+
+.controls { display: grid; grid-template-columns: repeat(3, minmax(150px, 1fr)); gap: 10px; width: min(760px, calc(100% - 40px)); margin: 0 auto 24px; }
+.control-button { min-height: 72px; display: flex; align-items: center; gap: 14px; padding: 12px 18px; border: 1px solid rgba(255,255,255,.08); border-radius: 12px; color: var(--ink); background: rgba(20, 31, 48, .82); cursor: pointer; text-align: left; transition: .2s ease; }
+.control-button:hover { transform: translateY(-2px); border-color: rgba(198,241,58,.45); }
+.control-button.primary { border-color: rgba(198,241,58,.42); background: linear-gradient(135deg, rgba(198,241,58,.15), rgba(20,31,48,.9)); }
+.button-icon { display: grid; place-items: center; width: 40px; height: 40px; flex: 0 0 40px; border-radius: 50%; color: var(--accent); background: rgba(198,241,58,.08); font-size: 1.2rem; }
+.control-button small { display: block; margin-bottom: 3px; color: var(--muted); font-size: .66rem; text-transform: uppercase; letter-spacing: .08em; }
+.control-button strong { font-size: .78rem; letter-spacing: .08em; }
+
+@media (max-width: 680px) {
+  .app-shell { grid-template-rows: auto 390px auto; }
+  .scene { width: 100%; height: 360px; transform: scale(.68); }
+  .stage { overflow: hidden; }
+  .controls { grid-template-columns: 1fr; width: calc(100% - 28px); }
+  .control-button { min-height: 58px; }
+  .status { display: none; }
+}
